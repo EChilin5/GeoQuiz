@@ -2,13 +2,21 @@ package com.bignerdranch.android.geoquiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 
+
+// determine the source of the package
+private const val TAG = "MAINACTIVITY"
+
 class MainActivity : AppCompatActivity() {
+    // stopped on this section
+    // https://learning.oreilly.com/library/view/android-programming-the/9780135257555/ch03s05.html
+
 
     // lateinit is used to indicate to teh compiler that it is a non-null view
     private lateinit var trueButton: Button
@@ -31,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate(Bundle?) called")
         setContentView(R.layout.activity_main)
 
         trueButton = findViewById(R.id.true_button)
@@ -67,12 +76,47 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
         updateQuestion()
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() called")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "OnPause() called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "OnDestroy() called")
+    }
+
+
     private fun updateQuestion(){
         val questionTextResID = questionBank[currentIndex].textResID
+        // Log a message at DEBUG log level
+        Log.d(TAG, "Current question index: $currentIndex")
+
+        try {
+            val question = questionBank[currentIndex]
+        } catch (ex: ArrayIndexOutOfBoundsException) {
+            // Log a message at ERROR log level, along with an exception stack trace
+            Log.e(TAG, "Index was out of bounds", ex)
+        }
         questionTextView.setText(questionTextResID)
     }
 
